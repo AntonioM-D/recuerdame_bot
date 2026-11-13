@@ -21,7 +21,7 @@
 <p align="center">
   <img src="assets/readme-demo.svg" alt="Vista ilustrativa del menú y los recordatorios de Recuérdame Bot" width="900">
 </p>
-La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
+La imagen es una **maqueta ilustrativa:** muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
 
 ## 📱 Demostración Visual
 
@@ -190,10 +190,8 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 | `BOT_TOKEN` | Sí | — | Token del bot emitido por BotFather. |
 | `ALLOWED_USER_IDS` | Sí | — | ID o lista de ID de Telegram separados por comas. Solo estos usuarios pueden usar el bot y recibir alertas. |
 | `ALERT_API_TOKEN` | Sí | — | Secreto de acceso a la API de alertas. Usa una cadena larga y aleatoria. |
-
 | `TIMEZONE` | No | `Europe/Madrid` | Zona horaria para fechas y horas de recordatorios. |
 | `TZ` | No | `Europe/Madrid` | Zona horaria del contenedor. |
-
 | `API_HOST` | No | `0.0.0.0` | Interfaz donde escucha la API dentro del contenedor. |
 | `API_PORT` | No | `8080` | Puerto interno de la API. |
 | `DB_PATH` | No | `/app/data/mibot.db` | Ruta de SQLite dentro del contenedor. |
@@ -202,6 +200,11 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 | `LOG_LEVEL` | No | `INFO` | Nivel de registro, por ejemplo `INFO` o `DEBUG`. |
 
 Para más de un usuario, escribe los ID separados por comas, por ejemplo `111111111,222222222`. No uses nombres de usuario como sustituto de los ID.
+
+Para `ALERT_API_TOKEN` puedes generarlo con:
+```bash
+openssl rand -hex 32
+```
 
 ## ⌨️ Comandos de Telegram
 
