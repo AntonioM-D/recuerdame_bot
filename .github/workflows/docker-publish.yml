@@ -7,6 +7,11 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      version_tag:
+        description: "Etiqueta opcional, por ejemplo v1.0"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -38,6 +43,6 @@ jobs:
           push: true
           tags: |
             valkm/recuerdame_bot:latest
-            valkm/recuerdame_bot:${{ github.ref_name }}
+            valkm/recuerdame_bot:${{ inputs.version_tag != '' && inputs.version_tag || github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
