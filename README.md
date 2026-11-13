@@ -48,6 +48,35 @@ docker compose up -d
 
 La imagen multi-arquitectura está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot). Compose descargará la variante compatible con tu NAS.
 
+### Ejemplo Compose usando directamente Docker Hub
+
+Si quieres crear tu propio `docker-compose.yml` sin clonar el repositorio, puedes partir de este ejemplo. Crea un archivo `.env` con `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN`; puedes copiar `.env.example` como plantilla.
+
+```yaml
+services:
+  mibot:
+    image: valkm/recuerdame_bot:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      TZ: Europe/Madrid
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "127.0.0.1:8787:8080"
+```
+
+Desde esa carpeta, arranca el bot con:
+
+```bash
+mkdir -p data
+docker compose pull
+docker compose up -d
+```
+
+Para fijar una versión, cambia `latest` por la etiqueta deseada, por ejemplo `valkm/recuerdame_bot:v1.0`.
+
 Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la configuración de Synology están más abajo.
 
 **Versión documentada:** v1.0 · Consulta el [historial de cambios](CHANGELOG.md).
