@@ -50,24 +50,24 @@ La imagen multi-arquitectura está publicada en [Docker Hub](https://hub.docker.
 
 ### Ejemplo Compose usando directamente Docker Hub
 
-Si quieres crear tu propio `docker-compose.yml` sin clonar el repositorio, puedes partir de este ejemplo. Crea un archivo `.env` con `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN`; puedes copiar `.env.example` como plantilla.
+Si quieres crear tu propio `docker-compose.yml` sin clonar el repositorio, puedes partir de este ejemplo. Sustituye los valores de ejemplo por los tuyos antes de arrancar:
 
 ```yaml
 services:
   mibot:
     image: valkm/recuerdame_bot:latest
     restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      TZ: Europe/Madrid
+
+
+
+    environment: { BOT_TOKEN: "PEGA_AQUI_EL_TOKEN_DE_BOTFATHER", ALLOWED_USER_IDS: "123456789", ALERT_API_TOKEN: "CAMBIA_ESTO_POR_UN_SECRETO_LARGO_Y_ALEATORIO", TZ: "Europe/Madrid" }
     volumes:
       - ./data:/app/data
     ports:
-      - "127.0.0.1:8787:8080"
+      - "8787:8080"
 ```
 
-Desde esa carpeta, arranca el bot con:
+El puerto 8787 queda accesible desde la red local del NAS. La API requiere ALERT_API_TOKEN; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
 
 ```bash
 mkdir -p data
