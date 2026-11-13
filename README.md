@@ -57,14 +57,41 @@ services:
   mibot:
     image: valkm/recuerdame_bot:latest
     restart: unless-stopped
-
-
-
-    environment: { BOT_TOKEN: "PEGA_AQUI_EL_TOKEN_DE_BOTFATHER", ALLOWED_USER_IDS: "123456789", ALERT_API_TOKEN: "CAMBIA_ESTO_POR_UN_SECRETO_LARGO_Y_ALEATORIO", TZ: "Europe/Madrid" }
+    init: true
+    environment:
+      BOT_TOKEN: "PEGA_AQUI_EL_TOKEN_DE_BOTFATHER"
+      ALLOWED_USER_IDS: "123456789"
+      ALERT_API_TOKEN: "CAMBIA_ESTO_POR_UN_SECRETO_LARGO_Y_ALEATORIO"
+      TZ: Europe/Madrid
     volumes:
       - ./data:/app/data
     ports:
       - "8787:8080"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=10)"
+      interval: 1m
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      - mibot-net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  mibot-net:
+
 ```
 
 El puerto 8787 queda accesible desde la red local del NAS. La API requiere ALERT_API_TOKEN; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
