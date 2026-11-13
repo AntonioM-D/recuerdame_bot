@@ -39,8 +39,8 @@ La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos 
 ```bash
 git clone https://github.com/AntonioM-D/recuerdame_bot.git
 cd recuerdame_bot
-cp .env.example .env
-# Edita .env con tu token, tus ID autorizados y un secreto propio.
+
+# Sustituye credenciales de ejemplo directamente en docker-compose.yml.
 mkdir -p data
 docker compose pull
 docker compose up -d
@@ -102,14 +102,14 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 ## 🐳 Instalación con Docker Compose
 
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
-2. En esa carpeta, crea tu configuración a partir del ejemplo:
+2. Edita `docker-compose.yml` y cambia las tres variables de ejemplo por tus credenciales.
 
    ```bash
-   cp .env.example .env
+   mkdir -p data
    ```
 
-3. Edita `.env` y sustituye el token de BotFather, los ID autorizados y el secreto de la API. No compartas ni publiques `.env`.
-4. Crea la carpeta persistente y arranca el servicio:
+
+3. Crea la carpeta persistente y arranca el servicio:
 
    ```bash
    mkdir -p data
@@ -123,7 +123,7 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
    sudo chown -R 10001:10001 data
    ```
 
-5. Revisa el estado y los registros:
+4. Revisa el estado y los registros:
 
    ```bash
    docker compose ps
@@ -132,7 +132,7 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 
 6. Abre el bot en Telegram y envía `/start` o `/menu`.
 
-El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entrantes en el router. La API se publica por defecto solo en `127.0.0.1:8787` del host.
+El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entrantes en el router. La API de alertas queda accesible en la red local mediante el puerto `8787` del NAS.
 
 ## ⚙️ Configuración
 
@@ -141,10 +141,10 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 | `BOT_TOKEN` | Sí | — | Token del bot emitido por BotFather. |
 | `ALLOWED_USER_IDS` | Sí | — | ID o lista de ID de Telegram separados por comas. Solo estos usuarios pueden usar el bot y recibir alertas. |
 | `ALERT_API_TOKEN` | Sí | — | Secreto de acceso a la API de alertas. Usa una cadena larga y aleatoria. |
-| `DOCKERHUB_IMAGE` | No | `valkm/recuerdame_bot:latest` | Imagen multi-arquitectura descargada por Compose. |
+
 | `TIMEZONE` | No | `Europe/Madrid` | Zona horaria para fechas y horas de recordatorios. |
 | `TZ` | No | `Europe/Madrid` | Zona horaria del contenedor. |
-| `API_BIND_PORT` | No | `8787` | Puerto del host enlazado solo a loopback. |
+
 | `API_HOST` | No | `0.0.0.0` | Interfaz donde escucha la API dentro del contenedor. |
 | `API_PORT` | No | `8080` | Puerto interno de la API. |
 | `DB_PATH` | No | `/app/data/mibot.db` | Ruta de SQLite dentro del contenedor. |
@@ -193,14 +193,14 @@ Si no indicas una hora, el bot usa las 09:00 en la zona horaria configurada.
 
 ## 🔌 API local de alertas
 
-Desde el propio servidor, envía un aviso con:
+Desde el propio servidor, define en la terminal el mismo `ALERT_API_TOKEN` que configuraste en `docker-compose.yml` y envía un aviso con:
 
 ```bash
-set -a
-. ./.env
-set +a
+# Define ALERT_API_TOKEN con el mismo valor del Compose antes de usar curl.
 
-curl -X POST "http://127.0.0.1:${API_BIND_PORT:-8787}/notify" \
+
+
+curl -X POST "http://127.0.0.1:8787/notify" \
   -H "Authorization: Bearer $ALERT_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"title":"NAS","message":"El backup ha terminado","severity":"info"}'
@@ -209,10 +209,10 @@ curl -X POST "http://127.0.0.1:${API_BIND_PORT:-8787}/notify" \
 La API admite `info`, `warning` y `critical`; el título y el mensaje son obligatorios. El endpoint `/health` sirve para comprobar que la API está activa:
 
 ```bash
-curl "http://127.0.0.1:${API_BIND_PORT:-8787}/health"
+curl "http://127.0.0.1:8787/health"
 ```
 
-El puerto solo está publicado en loopback por defecto. Para que otro contenedor acceda a la API, ambos servicios deben compartir una red Docker y ese contenedor debe usar `http://mibot:8080/notify` junto con el token. No publiques el puerto interno directamente en Internet.
+El puerto `8787` queda publicado en las interfaces de red del NAS. Para que otro contenedor acceda a la API, ambos servicios deben compartir una red Docker y ese contenedor debe usar `http://mibot:8080/notify` junto con el token. No configures un reenvío desde Internet.
 
 ## 💾 Datos, copias y actualización
 
@@ -239,8 +239,8 @@ docker compose -f docker-compose.yml -f docker-compose.source.yml up -d --build
 
 ## 🔐 Seguridad
 
-- **Protege tus credenciales:** no publiques `.env`, tokens ni ID privados. `.gitignore` excluye la configuración local, la base de datos y sus copias.
-- **API local:** requiere `ALERT_API_TOKEN` y se publica solo en `127.0.0.1` del host por defecto. No expongas el puerto directamente a Internet.
+- **Protege tus credenciales:** no publiques tokens, ID privados ni el `docker-compose.yml` después de reemplazar los valores de ejemplo por credenciales reales. `.gitignore` excluye la base de datos y sus copias.
+- **API de alertas:** requiere `ALERT_API_TOKEN` y se publica en la red local del NAS. No configures un reenvío del puerto desde Internet.
 - **Acceso limitado:** el bot solo acepta mensajes de los ID incluidos en `ALLOWED_USER_IDS`.
 - **Docker aislado:** el contenedor no monta el socket de Docker ni puede administrar otros contenedores.
 - **Una instancia por token:** ejecuta un solo proceso de polling para cada bot de Telegram.
