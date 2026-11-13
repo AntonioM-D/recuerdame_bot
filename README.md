@@ -1,8 +1,47 @@
-# Recuérdame Bot
+# 🤖 Recuérdame Bot
 
-Bot personal de Telegram para gestionar recordatorios en español. Está escrito en Python con aiogram y SQLite, y se puede ejecutar en Docker, incluido un Synology NAS.
+<p align="center">
+  <strong>Tu asistente personal de recordatorios en Telegram.</strong><br>
+  Fechas naturales, recurrencias, notas y alertas para tu NAS, en un bot ligero con Docker.
+</p>
 
-**Versión documentada:** v1.0
+<p align="center">
+  <img alt="Versión" src="https://img.shields.io/badge/versi%C3%B3n-1.0-2878d0?style=for-the-badge">
+  <img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776ab?style=for-the-badge&logo=python&logoColor=white">
+  <img alt="Docker Compose" src="https://img.shields.io/badge/Docker-Compose-2496ed?style=for-the-badge&logo=docker&logoColor=white">
+  <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-2ea44f?style=for-the-badge"></a>
+</p>
+
+<p align="center">
+  <img src="assets/readme-demo.svg" alt="Vista ilustrativa del menú y los recordatorios de Recuérdame Bot" width="900">
+</p>
+
+## ✨ Qué puedes hacer
+
+| 📝 Recordatorios | 🔁 Recurrencias | 🏷️ Organización |
+| --- | --- | --- |
+| Escribe «recuérdame comprar leche mañana a las 18:30». | Diarias, semanales o mensuales; puedes pausar o cambiar la frecuencia. | Añade etiquetas, notas y enlaces a cada tarea. |
+
+| 🔔 Seguimiento | 🔗 Enlaces | 📊 Historial |
+| --- | --- | --- |
+| Repite avisos sin respuesta con límites configurables. | Comparte URL y consulta la información disponible del lanzamiento. | Revisa acciones recientes y estadísticas de actividad. |
+
+La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
+
+## 🚀 Inicio rápido
+
+```bash
+git clone https://github.com/AntonioM-D/recuerdame_bot.git
+cd recuerdame_bot
+cp .env.example .env
+# Edita .env con tu token, tus ID autorizados y un secreto propio.
+mkdir -p data
+docker compose up -d --build
+```
+
+Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la configuración de Synology están más abajo.
+
+**Versión documentada:** v1.0 · Consulta el [historial de cambios](CHANGELOG.md).
 
 ## Funciones
 
@@ -16,13 +55,13 @@ Bot personal de Telegram para gestionar recordatorios en español. Está escrito
 - API HTTP local para enviar alertas desde scripts y otros contenedores.
 - Aviso a los usuarios autorizados cuando el bot arranca, con versión y hora.
 
-## Requisitos
+## 📦 Requisitos
 
 - Docker Engine y Docker Compose.
 - Un bot de Telegram creado mediante [@BotFather](https://t.me/BotFather).
 - El ID numérico de cada usuario autorizado.
 
-## Instalación con Docker Compose
+## 🐳 Instalación con Docker Compose
 
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
 2. En esa carpeta, crea tu configuración a partir del ejemplo:
@@ -56,7 +95,7 @@ Bot personal de Telegram para gestionar recordatorios en español. Está escrito
 
 El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entrantes en el router. La API se publica por defecto solo en `127.0.0.1:8787` del host.
 
-## Configuración
+## ⚙️ Configuración
 
 | Variable | Obligatoria | Valor inicial | Descripción |
 | --- | --- | --- | --- |
@@ -75,7 +114,7 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 
 Para más de un usuario, escribe los ID separados por comas, por ejemplo `111111111,222222222`. No uses nombres de usuario como sustituto de los ID.
 
-## Comandos de Telegram
+## ⌨️ Comandos de Telegram
 
 | Comando | Uso |
 | --- | --- |
@@ -112,7 +151,7 @@ Recuérdame comprar leche mañana a las 18:30
 
 Si no indicas una hora, el bot usa las 09:00 en la zona horaria configurada.
 
-## API local de alertas
+## 🔌 API local de alertas
 
 Desde el propio servidor, envía un aviso con:
 
@@ -135,7 +174,7 @@ curl "http://127.0.0.1:${API_BIND_PORT:-8787}/health"
 
 El puerto solo está publicado en loopback por defecto. Para que otro contenedor acceda a la API, ambos servicios deben compartir una red Docker y ese contenedor debe usar `http://mibot:8080/notify` junto con el token. No publiques el puerto interno directamente en Internet.
 
-## Datos, copias y actualización
+## 💾 Datos, copias y actualización
 
 La base SQLite vive en `data/` y persiste al recrear el contenedor. La carpeta contiene datos personales: no se incluye en Git. Haz una copia antes de actualizar o migrar el NAS. Para una copia SQLite consistente mientras el bot está en uso, puedes usar la API de backup integrada de Python dentro del contenedor:
 
@@ -151,14 +190,14 @@ Después de actualizar el código, reconstruye el contenedor sin borrar `data/`:
 docker compose up -d --build
 ```
 
-## Seguridad
+## 🔐 Seguridad
 
-- No subas `.env`, tokens, ID privados, bases de datos, copias de seguridad ni logs con datos personales.
-- `.gitignore` excluye la configuración local y los datos persistentes. Revisa el contenido antes de cada publicación.
-- La API utiliza `ALERT_API_TOKEN` y se enlaza solo a loopback del host por defecto.
-- El bot no monta el socket de Docker y no controla contenedores: otros servicios le envían alertas mediante HTTP.
-- Usa un proceso de polling por cada token de bot de Telegram.
+- **Protege tus credenciales:** no publiques `.env`, tokens ni ID privados. `.gitignore` excluye la configuración local, la base de datos y sus copias.
+- **API local:** requiere `ALERT_API_TOKEN` y se publica solo en `127.0.0.1` del host por defecto. No expongas el puerto directamente a Internet.
+- **Acceso limitado:** el bot solo acepta mensajes de los ID incluidos en `ALLOWED_USER_IDS`.
+- **Docker aislado:** el contenedor no monta el socket de Docker ni puede administrar otros contenedores.
+- **Una instancia por token:** ejecuta un solo proceso de polling para cada bot de Telegram.
 
-## Licencia
+## 📄 Licencia
 
 Este proyecto se distribuye bajo la licencia [MIT](LICENSE), que permite usarlo, modificarlo y redistribuirlo conservando el aviso de copyright y la licencia.
