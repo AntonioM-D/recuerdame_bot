@@ -21,6 +21,7 @@
 <p align="center">
   <img src="assets/readme-demo.svg" alt="Vista ilustrativa del menú y los recordatorios de Recuérdame Bot" width="900">
 </p>
+La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
 
 ## ✨ Qué puedes hacer
 
