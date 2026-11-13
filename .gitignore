@@ -1,0 +1,24 @@
+# Secrets and local deployment settings
+.env
+.env.*
+!.env.example
+
+# Persistent user data and database artifacts
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+backups/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors and OS metadata
+.DS_Store
+.idea/
+.vscode/

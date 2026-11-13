@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+!.env.example
+data
+backups
+__pycache__
+*.py[cod]
+*.db
+*.sqlite*
+*.bak
+*.pdf
