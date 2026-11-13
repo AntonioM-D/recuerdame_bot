@@ -23,6 +23,29 @@
 </p>
 La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
 
+## 📱 Demostración Visual
+
+### Menú Principal y Estado
+Interfaz interactiva con botones de navegación y control de estado del bot.
+
+<p align="center">
+  <img src="assets/ejemplo_botones.png" alt="Menú Principal Recuérdame Bot" width="600"/>
+</p>
+
+### Panel de Ayuda y Comandos
+Listado completo de comandos soportados para la gestión de notas, etiquetas y recurrencias.
+
+<p align="center">
+  <img src="assets/ejemplo_comandos.png" alt="Comandos de Recuérdame Bot" width="600"/>
+</p>
+
+### Creación de Recordatorios con Enlaces
+El bot procesa metadatos automáticamente al compartir URLs (como libros o lanzamientos) y confirma el registro con éxito.
+
+<p align="center">
+  <img src="assets/ejemplo_link.png" alt="Creación de recordatorio con enlace" width="600"/>
+</p>
+
 ## ✨ Qué puedes hacer
 
 | 📝 Recordatorios | 🔁 Recurrencias | 🏷️ Organización |
@@ -32,8 +55,6 @@ La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos 
 | 🔔 Seguimiento | 🔗 Enlaces | 📊 Historial |
 | --- | --- | --- |
 | Repite avisos sin respuesta con límites configurables. | Comparte URL y consulta la información disponible del lanzamiento. | Revisa acciones recientes y estadísticas de actividad. |
-
-La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
 
 ## 🚀 Inicio rápido
 
