@@ -1,20 +1,17 @@
 services:
   mibot:
-    image: ${DOCKERHUB_IMAGE:-valkm/recuerdame_bot:latest}
+    image: valkm/recuerdame_bot:latest
     restart: unless-stopped
     init: true
-
-    env_file:
-      - .env
     environment:
-      TZ: ${TZ:-Europe/Madrid}
-
+      BOT_TOKEN: "PEGA_AQUI_EL_TOKEN_DE_BOTFATHER"
+      ALLOWED_USER_IDS: "123456789"
+      ALERT_API_TOKEN: "CAMBIA_ESTO_POR_UN_SECRETO_LARGO_Y_ALEATORIO"
+      TZ: Europe/Madrid
     volumes:
       - ./data:/app/data
-
     ports:
-      - "127.0.0.1:${API_BIND_PORT:-8787}:8080"
-
+      - "8787:8080"
     healthcheck:
       test:
         - CMD
@@ -25,15 +22,12 @@ services:
       timeout: 15s
       retries: 3
       start_period: 60s
-
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
-
     networks:
       - mibot-net
-
     logging:
       driver: json-file
       options:
