@@ -46,7 +46,7 @@ docker compose pull
 docker compose up -d
 ```
 
-La imagen multi-arquitectura se publicará en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot). Compose descargará la variante compatible con tu NAS.
+La imagen multi-arquitectura está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot). Compose descargará la variante compatible con tu NAS.
 
 Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la configuración de Synology están más abajo.
 
@@ -63,6 +63,7 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 - Historial y resumen de actividad.
 - API HTTP local para enviar alertas desde scripts y otros contenedores.
 - Aviso a los usuarios autorizados cuando el bot arranca, con versión y hora.
+
 ## 📦 Requisitos
 
 - Docker Engine y Docker Compose.
@@ -108,7 +109,6 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 
 | Variable | Obligatoria | Valor inicial | Descripción |
 | --- | --- | --- | --- |
-
 | `BOT_TOKEN` | Sí | — | Token del bot emitido por BotFather. |
 | `ALLOWED_USER_IDS` | Sí | — | ID o lista de ID de Telegram separados por comas. Solo estos usuarios pueden usar el bot y recibir alertas. |
 | `ALERT_API_TOKEN` | Sí | — | Secreto de acceso a la API de alertas. Usa una cadena larga y aleatoria. |
@@ -219,6 +219,5 @@ docker compose -f docker-compose.yml -f docker-compose.source.yml up -d --build
 ## 📄 Licencia
 
 Este proyecto se distribuye bajo la licencia [MIT](LICENSE), que permite usarlo, modificarlo y redistribuirlo conservando el aviso de copyright y la licencia.
-
 
 📘 **Manual detallado:** [descargar la guía de comandos en PDF](docs/manual-comandos.pdf).
