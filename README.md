@@ -155,11 +155,13 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 - Ponle un nombre, por ejemplo MiBot Personal.
 - Elige un nombre de usuario terminado en bot.
 - Guarda el token que te proporcione.
-- Obtener tu identificador
+- Obtén tu identificador numérico de usuario.
+
 <p align="center">
   <img src="assets/bot_father.jpg" alt="Menú Principal Recuérdame Bot" width="600"/>
 </p>
-- Busca [@userinfobot](https://t.me/userinfobot) en Telegram y consulta tu ID numérico.
+
+Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` para consultar tu ID numérico.
 
 ## 🐳 Instalación con Docker Compose
 
