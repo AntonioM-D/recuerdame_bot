@@ -1,0 +1,4 @@
+services:
+  mibot:
+    build: .
+    pull_policy: build

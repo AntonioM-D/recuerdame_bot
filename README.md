@@ -14,6 +14,7 @@
   <img alt="Versión" src="https://img.shields.io/badge/versi%C3%B3n-1.0-2878d0?style=for-the-badge">
   <img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776ab?style=for-the-badge&logo=python&logoColor=white">
   <img alt="Docker Compose" src="https://img.shields.io/badge/Docker-Compose-2496ed?style=for-the-badge&logo=docker&logoColor=white">
+  <a href="https://hub.docker.com/r/valkm/recuerdame_bot"><img alt="Docker Hub" src="https://img.shields.io/docker/pulls/valkm/recuerdame_bot?style=for-the-badge&logo=docker&logoColor=white"></a>
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-2ea44f?style=for-the-badge"></a>
 </p>
 
@@ -41,8 +42,11 @@ cd recuerdame_bot
 cp .env.example .env
 # Edita .env con tu token, tus ID autorizados y un secreto propio.
 mkdir -p data
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 ```
+
+La imagen multi-arquitectura se publicará en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot). Compose descargará la variante compatible con tu NAS.
 
 Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la configuración de Synology están más abajo.
 
@@ -59,11 +63,6 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 - Historial y resumen de actividad.
 - API HTTP local para enviar alertas desde scripts y otros contenedores.
 - Aviso a los usuarios autorizados cuando el bot arranca, con versión y hora.
-
-<p align="center">
-  <a href="assets/bot.png"><img src="assets/bot.png" alt="Avatar oficial de Recuérdame Bot para Telegram" width="220"></a><br>
-  <em>Avatar del bot: puedes descargarlo y usarlo en @BotFather.</em>
-</p>
 ## 📦 Requisitos
 
 - Docker Engine y Docker Compose.
@@ -84,7 +83,8 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 
    ```bash
    mkdir -p data
-   docker compose up -d --build
+   docker compose pull
+   docker compose up -d
    ```
 
    En Synology quizá necesites ajustar los permisos de `data` para el UID `10001`, que es el usuario sin privilegios utilizado en el contenedor:
@@ -112,6 +112,7 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 | `BOT_TOKEN` | Sí | — | Token del bot emitido por BotFather. |
 | `ALLOWED_USER_IDS` | Sí | — | ID o lista de ID de Telegram separados por comas. Solo estos usuarios pueden usar el bot y recibir alertas. |
 | `ALERT_API_TOKEN` | Sí | — | Secreto de acceso a la API de alertas. Usa una cadena larga y aleatoria. |
+| `DOCKERHUB_IMAGE` | No | `valkm/recuerdame_bot:latest` | Imagen multi-arquitectura descargada por Compose. |
 | `TIMEZONE` | No | `Europe/Madrid` | Zona horaria para fechas y horas de recordatorios. |
 | `TZ` | No | `Europe/Madrid` | Zona horaria del contenedor. |
 | `API_BIND_PORT` | No | `8787` | Puerto del host enlazado solo a loopback. |
@@ -194,10 +195,17 @@ docker compose exec -T -e BACKUP="/app/data/mibot-backup-$stamp.sqlite3" mibot \
   python -c 'import os, sqlite3; src=sqlite3.connect("/app/data/mibot.db"); dst=sqlite3.connect(os.environ["BACKUP"]); src.backup(dst); dst.close(); src.close(); print("Copia creada:", os.environ["BACKUP"])'
 ```
 
-Después de actualizar el código, reconstruye el contenedor sin borrar `data/`:
+Para actualizar a la imagen publicada más reciente, sin borrar `data/`:
 
 ```bash
-docker compose up -d --build
+docker compose pull
+docker compose up -d
+```
+
+Si prefieres construir desde el código fuente, usa el archivo adicional:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.source.yml up -d --build
 ```
 
 ## 🔐 Seguridad

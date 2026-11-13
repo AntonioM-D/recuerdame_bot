@@ -1,6 +1,6 @@
 services:
   mibot:
-    build: .
+    image: ${DOCKERHUB_IMAGE:-valkm/recuerdame_bot:latest}
     restart: unless-stopped
     init: true
 
