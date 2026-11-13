@@ -21,7 +21,7 @@
 <p align="center">
   <img src="assets/readme-demo.svg" alt="Vista ilustrativa del menú y los recordatorios de Recuérdame Bot" width="900">
 </p>
-La imagen es una **maqueta ilustrativa:** muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
+La imagen es una La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
 
 ## 📱 Demostración Visual
 
@@ -116,7 +116,7 @@ networks:
 
 ```
 
-El puerto 8787 queda accesible desde la red local del NAS. La API requiere ALERT_API_TOKEN; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
+El puerto **8787** queda accesible desde la red local del NAS. La API requiere ALERT_API_TOKEN; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
 
 ```bash
 mkdir -p data
@@ -147,6 +147,19 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 - Docker Engine y Docker Compose.
 - Un bot de Telegram creado mediante [@BotFather](https://t.me/BotFather).
 - El ID numérico de cada usuario autorizado.
+
+## 🤖 Para crear nuestro bot en Telegram
+- Abre Telegram.
+- Busca [@BotFather](https://t.me/BotFather).
+- Ejecuta /newbot.
+- Ponle un nombre, por ejemplo MiBot Personal.
+- Elige un nombre de usuario terminado en bot.
+- Guarda el token que te proporcione.
+- Obtener tu identificador
+<p align="center">
+  <img src="assets/bot_father.jpg" alt="Menú Principal Recuérdame Bot" width="600"/>
+</p>
+- Busca [@userinfobot](https://t.me/userinfobot) en Telegram y consulta tu ID numérico.
 
 ## 🐳 Instalación con Docker Compose
 
@@ -241,7 +254,7 @@ Recuérdame comprar leche mañana a las 18:30
 /etiqueta 12 borrar
 ```
 
-Si no indicas una hora, el bot usa las 09:00 en la zona horaria configurada.
+Si no indicas una hora, el bot usa las **09:00** en la zona horaria configurada.
 
 ## 🔌 API local de alertas
 
@@ -268,7 +281,7 @@ El puerto `8787` queda publicado en las interfaces de red del NAS. Para que otro
 
 ## 💾 Datos, copias y actualización
 
-La base SQLite vive en `data/` y persiste al recrear el contenedor. La carpeta contiene datos personales: no se incluye en Git. Haz una copia antes de actualizar o migrar el NAS. Para una copia SQLite consistente mientras el bot está en uso, puedes usar la API de backup integrada de Python dentro del contenedor:
+La base SQLite vive en `data/` y persiste al recrear el contenedor. Se crea por primera vez al crear el contenedor. Haz una copia antes de actualizar o migrar el NAS. Para una copia SQLite consistente mientras el bot está en uso, puedes usar la API de backup integrada de Python dentro del contenedor:
 
 ```bash
 stamp=$(date +%Y%m%d-%H%M%S)
