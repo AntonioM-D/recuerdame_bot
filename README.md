@@ -1,3 +1,8 @@
+<p align="center">
+  <a href="assets/bot.png"><img src="assets/bot.png" alt="Avatar oficial de Recuérdame Bot para Telegram" width="220"></a><br>
+  <em>Avatar del bot: puedes descargarlo y usarlo en @BotFather.</em>
+</p>
+
 # 🤖 Recuérdame Bot
 
 <p align="center">
@@ -55,6 +60,10 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 - API HTTP local para enviar alertas desde scripts y otros contenedores.
 - Aviso a los usuarios autorizados cuando el bot arranca, con versión y hora.
 
+<p align="center">
+  <a href="assets/bot.png"><img src="assets/bot.png" alt="Avatar oficial de Recuérdame Bot para Telegram" width="220"></a><br>
+  <em>Avatar del bot: puedes descargarlo y usarlo en @BotFather.</em>
+</p>
 ## 📦 Requisitos
 
 - Docker Engine y Docker Compose.
@@ -99,6 +108,7 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 
 | Variable | Obligatoria | Valor inicial | Descripción |
 | --- | --- | --- | --- |
+
 | `BOT_TOKEN` | Sí | — | Token del bot emitido por BotFather. |
 | `ALLOWED_USER_IDS` | Sí | — | ID o lista de ID de Telegram separados por comas. Solo estos usuarios pueden usar el bot y recibir alertas. |
 | `ALERT_API_TOKEN` | Sí | — | Secreto de acceso a la API de alertas. Usa una cadena larga y aleatoria. |
@@ -201,3 +211,6 @@ docker compose up -d --build
 ## 📄 Licencia
 
 Este proyecto se distribuye bajo la licencia [MIT](LICENSE), que permite usarlo, modificarlo y redistribuirlo conservando el aviso de copyright y la licencia.
+
+
+📘 **Manual detallado:** [descargar la guía de comandos en PDF](docs/manual-comandos.pdf).
