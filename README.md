@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img alt="Versión" src="https://img.shields.io/badge/versi%C3%B3n-1.0-2878d0?style=for-the-badge">
+  <img alt="Versión" src="https://img.shields.io/badge/versi%C3%B3n-1.1.0-2878d0?style=for-the-badge">
   <img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776ab?style=for-the-badge&logo=python&logoColor=white">
   <img alt="Docker Compose" src="https://img.shields.io/badge/Docker-Compose-2496ed?style=for-the-badge&logo=docker&logoColor=white">
   <a href="https://hub.docker.com/r/valkm/recuerdame_bot"><img alt="Docker Hub" src="https://img.shields.io/docker/pulls/valkm/recuerdame_bot?style=for-the-badge&logo=docker&logoColor=white"></a>
@@ -21,7 +21,7 @@
 <p align="center">
   <img src="assets/readme-demo.svg" alt="Vista ilustrativa del menú y los recordatorios de Recuérdame Bot" width="900">
 </p>
-La imagen es una La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
+La imagen es una **maqueta ilustrativa**: muestra ejemplos inventados, no datos ni capturas de conversaciones reales.
 
 ## 📱 Demostración Visual
 
@@ -117,7 +117,7 @@ networks:
 
 ```
 
-El puerto **8787** queda accesible desde la red local del NAS. La API requiere ALERT_API_TOKEN; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
+El puerto **8787** queda accesible desde la red local del NAS. La API requiere `ALERT_API_TOKEN`; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
 
 ```bash
 mkdir -p data
@@ -125,11 +125,11 @@ docker compose pull
 docker compose up -d
 ```
 
-Para fijar una versión, cambia `latest` por la etiqueta deseada, por ejemplo `valkm/recuerdame_bot:v1.0`.
+Para fijar una versión, cambia `latest` por la etiqueta deseada, por ejemplo `valkm/recuerdame_bot:1.1.0`.
 
 Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la configuración de Synology están más abajo.
 
-**Versión documentada:** v1.0 · Consulta el [historial de cambios](CHANGELOG.md).
+**Versión documentada:** v1.1.0 · Consulta el [historial de cambios](CHANGELOG.md).
 
 ## Funciones
 
@@ -142,6 +142,8 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 - Historial y resumen de actividad.
 - API HTTP local para enviar alertas desde scripts y otros contenedores.
 - Aviso a los usuarios autorizados cuando el bot arranca, con versión y hora.
+- Interpretación ampliada de fechas explícitas en español, incluidos días de la semana, y validación de fechas y horas indicadas.
+- Comando `/donate` para apoyar voluntariamente el proyecto; no desbloquea funciones adicionales.
 
 ## 📦 Requisitos
 
@@ -167,12 +169,7 @@ Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` pa
 ## 🐳 Instalación con Docker Compose
 
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
-2. Edita `docker-compose.yml` y cambia las tres variables de ejemplo por tus credenciales.
-
-   ```bash
-   mkdir -p data
-   ```
-
+2. Edita `docker-compose.yml` y cambia `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN` por tus valores. No publiques el archivo después de añadir credenciales reales.
 
 3. Crea la carpeta persistente y arranca el servicio:
 
@@ -195,7 +192,7 @@ Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` pa
    docker compose logs --tail=50 mibot
    ```
 
-6. Abre el bot en Telegram y envía `/start` o `/menu`.
+5. Abre el bot en Telegram y envía `/start` o `/menu`.
 
 El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entrantes en el router. La API de alertas queda accesible en la red local mediante el puerto `8787` del NAS.
 
@@ -229,12 +226,13 @@ openssl rand -hex 32
 | `/menu` | Abrir el menú interactivo. |
 | `/start` | Abrir el menú interactivo (alias; se mantiene disponible aunque no aparezca en la lista nativa). |
 | `/help` | Ver ayuda y ejemplos. |
+| `/donate` | Información para apoyar voluntariamente el proyecto. La donación no desbloquea funciones adicionales. |
 | `/recordar` | Crear un recordatorio. También puedes enviar directamente el texto sin comando. |
 | `/lista [#etiqueta]` | Ver recordatorios activos o filtrarlos por etiqueta. |
 | `/hoy` | Ver los recordatorios de hoy. |
 | `/semana` | Ver los previstos en los próximos siete días. |
 | `/proximos` | Ver los próximos recordatorios. |
-| `/cancelar ID` | Cancelar un recordatorio o detener una recurrencia conservando el historial. |
+| `/cancelar ID[, ID, ...]` | Cancelar uno o varios recordatorios, o detener recurrencias, conservando el historial. |
 | `/pausar ID` | Pausar una recurrencia. |
 | `/reactivar ID` | Reactivar una recurrencia pausada. |
 | `/frecuencia ID diaria\|semanal\|mensual` | Cambiar la periodicidad de una recurrencia; se aplica después de completar la ocurrencia actual. |
@@ -251,6 +249,7 @@ Ejemplos:
 Recuérdame comprar leche mañana a las 18:30
 /recordar renovar certificado dentro de 20 días
 /recordar revisar copias cada semana #NAS nota: comprobar el último backup
+/cancelar 22, 21, 20
 /lista #NAS
 /nota 12 descargar en epub
 /etiqueta 12 #Libros
@@ -265,9 +264,6 @@ Desde el propio servidor, define en la terminal el mismo `ALERT_API_TOKEN` que c
 
 ```bash
 # Define ALERT_API_TOKEN con el mismo valor del Compose antes de usar curl.
-
-
-
 curl -X POST "http://127.0.0.1:8787/notify" \
   -H "Authorization: Bearer $ALERT_API_TOKEN" \
   -H "Content-Type: application/json" \

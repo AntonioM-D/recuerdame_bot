@@ -183,6 +183,11 @@ async def interactive_menu(callback: CallbackQuery, db, settings):
         await callback.answer()
         return
 
+    if data == "menu:donate":
+        await send_donation(message)
+        await callback.answer()
+        return
+
     if data == "menu:close":
         await message.edit_text("Menú cerrado. Escribe /menu para abrirlo de nuevo.")
         await callback.answer()
@@ -337,10 +342,27 @@ async def interactive_menu(callback: CallbackQuery, db, settings):
     await callback.answer()
 
 
+async def send_donation(message: Message):
+    separator = chr(10) * 2
+    url = "https" + chr(58) + chr(47) * 2 + "paypal.me/" + "AntonioMartinDiaz"
+    link = "Si deseas hacerlo, haz clic " + chr(60) + "a href=" + chr(34) + url + chr(34) + ">aquí" + chr(60) + "/a>."
+    text = separator.join([
+        "Este proyecto es de código abierto y lo realizo en mi tiempo libre.",
+        "La donación no habilitará ninguna función extra, simplemente es una forma de agradecer el trabajo que hay detrás.",
+        link,
+        "Gracias ❤️",
+    ])
+    await message.answer(text, disable_web_page_preview=True)
+
+@router.message(Command("donate"))
+async def donate_command(message: Message):
+    await send_donation(message)
+
+
 @router.message(Command("help"))
 async def help_command(message: Message):
     await message.answer(
-        "¡Hola! Soy <b>MiBot Personal</b> 🤖\n\n"
+        "¡Hola! Soy <b>TuBot Personal</b> 🤖\n\n"
         "Puedo gestionar tus recordatorios y enviarte alertas de tus sistemas.\n\n"
         "<b>Ejemplos:</b>\n"
         "• Recuérdame comprar leche mañana a las 18:30\n"
@@ -350,6 +372,7 @@ async def help_command(message: Message):
         "• Recuérdame revisar las copias mañana #NAS\n\n"
         "<b>Comandos:</b>\n"
         "/cancelar ID — cancelar uno\n"
+        "/donate — Dona al desarrollador\n"
         "/estadisticas [días] — resumen de actividad\n"
         "/estado — estado del bot\n"
         "/etiqueta ID #NAS #Casa — asignar etiquetas o borrar\n"
@@ -674,18 +697,34 @@ async def upcoming_reminders(message: Message, db, settings):
 @router.message(Command("cancelar"))
 async def cancel_reminder(message: Message, db):
     parts = (message.text or "").split(maxsplit=1)
-    if len(parts) != 2 or not parts[1].isdigit():
+
+    if len(parts) != 2:
         await message.answer(
-            "Uso: /cancelar ID. Puedes consultar los identificadores con /lista."
+            "Uso: /cancelar ID o /cancelar ID1, ID2, ID3. "
+            "Puedes consultar los identificadores con /lista."
         )
         return
 
-    ok = await db.cancel_reminder(int(parts[1]), message.from_user.id)
-    await message.answer(
-        "🗑 Recordatorio cancelado."
-        if ok
-        else "No encuentro un recordatorio activo con ese ID."
-    )
+    raw_ids = [item.strip() for item in parts[1].split(",")]
+
+    if not raw_ids or any(not item.isdigit() for item in raw_ids):
+        await message.answer(
+            "Identificadores no válidos. Usa, por ejemplo: /cancelar 22, 21, 20"
+        )
+        return
+
+    reminder_ids = list(dict.fromkeys(int(item) for item in raw_ids))
+    results = []
+
+    for reminder_id in reminder_ids:
+        ok = await db.cancel_reminder(reminder_id, message.from_user.id)
+        results.append(
+            f"🗑 Recordatorio #{reminder_id} cancelado."
+            if ok
+            else f"❌ No encuentro un recordatorio activo con ID #{reminder_id}."
+        )
+
+    await message.answer("\n".join(results))
 
 
 @router.message(Command("pausar"))

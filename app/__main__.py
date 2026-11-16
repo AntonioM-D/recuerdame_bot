@@ -17,12 +17,13 @@ from .handlers import router
 from .services.scheduler import scheduler_loop
 
 
-BOT_VERSION = "1.0"
+BOT_VERSION = "1.1.0"
 
 
 BOT_COMMANDS = [
     BotCommand(command="menu", description="Abrir el menú interactivo"),
     BotCommand(command="cancelar", description="Cancelar un recordatorio"),
+    BotCommand(command="donate", description="Dona al desarrollador"),
     BotCommand(command="estadisticas", description="Ver actividad por periodo"),
     BotCommand(command="estado", description="Ver el estado del bot"),
     BotCommand(command="etiqueta", description="Asignar o quitar etiquetas"),

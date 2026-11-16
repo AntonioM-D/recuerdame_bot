@@ -101,6 +101,7 @@ def menu_main_keyboard():
                 InlineKeyboardButton(text="📊 Historial", callback_data="menu:section:history"),
                 InlineKeyboardButton(text="ℹ️ Ayuda", callback_data="menu:section:help"),
             ],
+            [InlineKeyboardButton(text="❤️ Donar al desarrollador", callback_data="menu:donate")],
             [InlineKeyboardButton(text="✖ Cerrar", callback_data="menu:close")],
         ]
     )

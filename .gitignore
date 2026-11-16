@@ -3,6 +3,15 @@
 .env.*
 !.env.example
 
+# Synology/macOS metadata and ad hoc implementation files
+.DS_Store
+@eaDir/
+*.bak*
+implementar-*.py
+corregir-estadisticas.py
+ordenar-comandos-alfabeticamente.py
+SELECT id, status, recurrence, due_at, recurrence_at FROM reminders WHERE id=7;
+
 # Persistent user data and database artifacts
 data/
 *.db
@@ -19,6 +28,5 @@ __pycache__/
 venv/
 
 # Editors and OS metadata
-.DS_Store
 .idea/
 .vscode/
