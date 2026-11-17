@@ -228,10 +228,10 @@ openssl rand -hex 32
 | `/help` | Ver ayuda y ejemplos. |
 | `/donate` | Información para apoyar voluntariamente el proyecto. La donación no desbloquea funciones adicionales. |
 | `/recordar` | Crear un recordatorio. También puedes enviar directamente el texto sin comando. |
-| `/lista [#etiqueta]` | Ver recordatorios activos o filtrarlos por etiqueta. |
+| `/lista [#etiqueta]` | Muestra tus recordatorios activos; puedes filtrar por etiqueta. Consulta general y organización de tus pendientes. |
 | `/hoy` | Ver los recordatorios de hoy. |
 | `/semana` | Ver los previstos en los próximos siete días. |
-| `/proximos` | Ver los próximos recordatorios. |
+| `/próximos` | Muestra los próximos recordatorios, ordenados por fecha. Consulta rápida de lo que tienes por delante.. |
 | `/cancelar ID[, ID, ...]` | Cancelar uno o varios recordatorios, o detener recurrencias, conservando el historial. |
 | `/pausar ID` | Pausar una recurrencia. |
 | `/reactivar ID` | Reactivar una recurrencia pausada. |
