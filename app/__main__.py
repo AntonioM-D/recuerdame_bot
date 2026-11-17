@@ -17,28 +17,28 @@ from .handlers import router
 from .services.scheduler import scheduler_loop
 
 
-BOT_VERSION = "1.1.0"
+BOT_VERSION = "1.1.1"
 
 
 BOT_COMMANDS = [
     BotCommand(command="menu", description="Abrir el menú interactivo"),
-    BotCommand(command="cancelar", description="Cancelar un recordatorio"),
-    BotCommand(command="donate", description="Dona al desarrollador"),
-    BotCommand(command="estadisticas", description="Ver actividad por periodo"),
-    BotCommand(command="estado", description="Ver el estado del bot"),
-    BotCommand(command="etiqueta", description="Asignar o quitar etiquetas"),
-    BotCommand(command="frecuencia", description="Cambiar una recurrencia"),
-    BotCommand(command="help", description="Ver ayuda y ejemplos"),
-    BotCommand(command="historial", description="Consultar acciones recientes"),
-    BotCommand(command="hoy", description="Ver los recordatorios de hoy"),
-    BotCommand(command="lista", description="Ver pendientes o filtrar por etiqueta"),
-    BotCommand(command="nota", description="Añadir o cambiar una nota"),
-    BotCommand(command="pausar", description="Pausar una recurrencia"),
-    BotCommand(command="proximos", description="Ver los próximos recordatorios"),
-    BotCommand(command="reactivar", description="Reactivar una recurrencia"),
     BotCommand(command="recordar", description="Crear un recordatorio"),
-    BotCommand(command="salir", description="Salir de una acción en curso"),
+    BotCommand(command="cancelar", description="Cancelar un recordatorio"),
+    BotCommand(command="hoy", description="Ver los recordatorios de hoy"),
     BotCommand(command="semana", description="Ver los próximos siete días"),
+    BotCommand(command="proximos", description="Ver los próximos recordatorios por fecha"),
+    BotCommand(command="lista", description="Ver recordatorios activos; filtrar por etiqueta"),
+    BotCommand(command="etiqueta", description="Asignar o quitar etiquetas"),
+    BotCommand(command="nota", description="Añadir o cambiar una nota"),
+    BotCommand(command="frecuencia", description="Cambiar una recurrencia"),
+    BotCommand(command="pausar", description="Pausar una recurrencia"),
+    BotCommand(command="reactivar", description="Reactivar una recurrencia"),
+    BotCommand(command="historial", description="Consultar acciones recientes"),
+    BotCommand(command="estadisticas", description="Ver actividad por periodo"),
+    BotCommand(command="salir", description="Salir de una acción en curso"),
+    BotCommand(command="help", description="Ver ayuda y ejemplos"),
+    BotCommand(command="estado", description="Ver el estado del bot"),
+    BotCommand(command="donate", description="Dona al desarrollador"),
 ]
 
 
