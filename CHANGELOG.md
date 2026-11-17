@@ -2,9 +2,22 @@
 
 ## v1.1.0
 
-- Ampliada la interpretación de fechas en español, con reconocimiento explícito de fechas numéricas y escritas, días de la semana y horas; el bot valida las fechas y horas indicadas.
-- Añadido `/donate` al menú y a los comandos de Telegram, con un enlace para apoyar voluntariamente el proyecto y una aclaración de que la donación no desbloquea funciones adicionales.
-- `/cancelar` ahora admite varios identificadores separados por comas.
+- Mejoras en el reconocimiento de fechas
+- Interpretación de fechas numéricas (DD/MM/YYYY y DD-MM-YYYY).
+- Reconocimiento de fechas escritas en español.
+- Mejoras en expresiones como «el próximo lunes» o «lunes que viene».
+- Soporte para horas concretas.
+- Conservación del reconocimiento de intervalos relativos y recurrencias.
+- Gestión de recordatorios
+- Mejora de la cancelación múltiple de recordatorios.
+- Posibilidad de cancelar varios identificadores en una misma operación.
+/cancelar admite ahora varios identificadores separados por comas.
+/cancelar 22, 21, 20
+
+✅ Recordatorio #22 cancelado
+✅ Recordatorio #21 cancelado
+❌ Recordatorio #20 no encontrado
+
 - Actualizados el aviso de arranque y la versión que muestra el bot a `1.1.0`.
 
 ## v1.0
