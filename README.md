@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img alt="Versión" src="https://img.shields.io/badge/versi%C3%B3n-1.1.0-2878d0?style=for-the-badge">
+  <img alt="Versión" src="https://img.shields.io/badge/versi%C3%B3n-1.1.1-2878d0?style=for-the-badge">
   <img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776ab?style=for-the-badge&logo=python&logoColor=white">
   <img alt="Docker Compose" src="https://img.shields.io/badge/Docker-Compose-2496ed?style=for-the-badge&logo=docker&logoColor=white">
   <a href="https://hub.docker.com/r/valkm/recuerdame_bot"><img alt="Docker Hub" src="https://img.shields.io/docker/pulls/valkm/recuerdame_bot?style=for-the-badge&logo=docker&logoColor=white"></a>
@@ -68,7 +68,7 @@ docker compose pull
 docker compose up -d
 ```
 
-La imagen multi-arquitectura está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot). Compose descargará la variante compatible con tu NAS.
+La imagen `valkm/recuerdame_bot` está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot) para `linux/amd64`. La variante ARM64 todavía no está publicada.
 
 ### Ejemplo Compose usando directamente Docker Hub
 
@@ -125,11 +125,11 @@ docker compose pull
 docker compose up -d
 ```
 
-Para fijar una versión, cambia `latest` por la etiqueta deseada, por ejemplo `valkm/recuerdame_bot:1.1.0`.
+Para fijar una versión, cambia `latest` por la etiqueta deseada, por ejemplo `valkm/recuerdame_bot:1.1.1`.
 
 Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la configuración de Synology están más abajo.
 
-**Versión documentada:** v1.1.0 · Consulta el [historial de cambios](CHANGELOG.md).
+**Versión documentada:** v1.1.1 · Consulta el [historial de cambios](CHANGELOG.md).
 
 ## Funciones
 
@@ -221,27 +221,30 @@ openssl rand -hex 32
 
 ## ⌨️ Comandos de Telegram
 
-| Comando | Uso |
-| --- | --- |
-| `/menu` | Abrir el menú interactivo. |
-| `/start` | Abrir el menú interactivo (alias; se mantiene disponible aunque no aparezca en la lista nativa). |
-| `/help` | Ver ayuda y ejemplos. |
-| `/donate` | Información para apoyar voluntariamente el proyecto. La donación no desbloquea funciones adicionales. |
-| `/recordar` | Crear un recordatorio. También puedes enviar directamente el texto sin comando. |
-| `/lista [#etiqueta]` | Muestra tus recordatorios activos; puedes filtrar por etiqueta. Consulta general y organización de tus pendientes. |
-| `/hoy` | Ver los recordatorios de hoy. |
-| `/semana` | Ver los previstos en los próximos siete días. |
-| `/próximos` | Muestra los próximos recordatorios, ordenados por fecha. Consulta rápida de lo que tienes por delante.. |
-| `/cancelar ID[, ID, ...]` | Cancelar uno o varios recordatorios, o detener recurrencias, conservando el historial. |
-| `/pausar ID` | Pausar una recurrencia. |
-| `/reactivar ID` | Reactivar una recurrencia pausada. |
-| `/frecuencia ID diaria\|semanal\|mensual` | Cambiar la periodicidad de una recurrencia; se aplica después de completar la ocurrencia actual. |
-| `/nota ID texto` | Añadir o cambiar la nota. Usa `/nota ID borrar` para quitarla. |
-| `/etiqueta ID #Libros #Casa` | Reemplazar las etiquetas del recordatorio. Usa `/etiqueta ID borrar` para eliminarlas todas. |
-| `/historial [límite]` | Consultar las últimas acciones (límite de 1 a 20; por defecto 15). |
-| `/estadisticas [días]` | Resumen de actividad (de 1 a 365 días; por defecto 30). |
-| `/estado` | Consultar el estado y la configuración de avisos persistentes. |
-| `/salir` | Salir de una acción guiada en curso. |
+Los comandos del menú nativo y de `/help` siguen este orden:
+
+| Nº | Comando | Uso |
+| ---: | --- | --- |
+| 1 | `/menu` | Abrir el menú interactivo. |
+| 2 | `/recordar` | Crear un recordatorio. También puedes enviar directamente el texto sin comando. |
+| 3 | `/cancelar ID[, ID, ...]` | Cancelar uno o varios recordatorios, o detener recurrencias, conservando el historial. |
+| 4 | `/hoy` | Ver los recordatorios de hoy. |
+| 5 | `/semana` | Ver los próximos siete días. |
+| 6 | `/proximos` | Mostrar los próximos recordatorios ordenados por fecha. |
+| 7 | `/lista [#etiqueta]` | Mostrar recordatorios activos; opcionalmente filtrar por etiqueta. |
+| 8 | `/etiqueta ID #Libros #Casa` | Asignar o quitar etiquetas. |
+| 9 | `/nota ID texto` | Añadir o cambiar una nota. Usa `/nota ID borrar` para quitarla. |
+| 10 | `/frecuencia ID diaria\|semanal\|mensual` | Cambiar la periodicidad de una recurrencia. |
+| 11 | `/pausar ID` | Pausar una recurrencia. |
+| 12 | `/reactivar ID` | Reactivar una recurrencia pausada. |
+| 13 | `/historial [límite]` | Consultar acciones recientes (límite de 1 a 20; por defecto 15). |
+| 14 | `/estadisticas [días]` | Resumen de actividad (de 1 a 365 días; por defecto 30). |
+| 15 | `/salir` | Salir de una acción guiada en curso. |
+| 16 | `/help` | Ver ayuda y ejemplos. |
+| 17 | `/estado` | Consultar el estado del bot y la configuración de avisos persistentes. |
+| 18 | `/donate` | Información para apoyar voluntariamente el proyecto; no desbloquea funciones adicionales. |
+
+`/start` también abre el menú interactivo como alias de inicio.
 
 Ejemplos:
 
@@ -250,6 +253,7 @@ Recuérdame comprar leche mañana a las 18:30
 /recordar renovar certificado dentro de 20 días
 /recordar revisar copias cada semana #NAS nota: comprobar el último backup
 /cancelar 22, 21, 20
+/proximos
 /lista #NAS
 /nota 12 descargar en epub
 /etiqueta 12 #Libros
