@@ -68,7 +68,7 @@ docker compose pull
 docker compose up -d
 ```
 
-La imagen `valkm/recuerdame_bot` está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot) para `linux/amd64`. La variante ARM64 todavía no está publicada.
+La imagen `valkm/recuerdame_bot` está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot) para `linux/amd64` y `ARM64`
 
 ### Ejemplo Compose usando directamente Docker Hub
 
