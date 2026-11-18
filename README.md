@@ -78,7 +78,7 @@ Si quieres crear tu propio `docker-compose.yml` sin clonar el repositorio, puede
 services:
   mibot:
     image: valkm/recuerdame_bot:latest
-    container_name: recuérdame_bot
+    container_name: recuerdame_bot
     restart: unless-stopped
     init: true
     environment:
