@@ -169,7 +169,7 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 
 Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` para consultar tu ID numérico.
 
-## 🐳 Instalación con Docker Compose (IMPORTANTE LEER, para el tema de persmisos)
+## 🐳 Instalación con Docker Compose (IMPORTANTE LEER!, para el tema de permisos)
 
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
 2. Edita `docker-compose.yml` y cambia `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN` por tus valores.
