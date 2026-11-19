@@ -134,15 +134,17 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 
 ## Funciones
 
-- Crear recordatorios escribiendo en lenguaje natural o con `/recordar`.
+- Crear recordatorios escribiendo en lenguaje natural (Recuérdame comprar leche.... o con `/recordar`.
 - Repeticiones diarias, semanales y mensuales, con opciones para pausar, reactivar y cambiar la frecuencia.
 - Botones para completar, posponer o cancelar un recordatorio; las repeticiones de avisos sin respuesta se pueden configurar.
+- Posibilidad de cancelar varios eventos de una vez, con el comando `/cancelar` seguido de la ID, Ej, `/cancelar` 21,22,23
 - Notas, etiquetas y enlaces asociados a recordatorios.
 - Detección de información de lanzamientos al enviar algunas URL compatibles. La fecha extraída depende del contenido y los metadatos públicos de cada sitio; conviene confirmarla antes de crear el recordatorio.
 - Menú interactivo en Telegram mediante `/menu` y menú de comandos nativo.
 - Historial y resumen de actividad.
 - API HTTP local para enviar alertas desde scripts y otros contenedores.
 - Aviso a los usuarios autorizados cuando el bot arranca, con versión y hora.
+- Estado del BOT
 - Interpretación ampliada de fechas explícitas en español, incluidos días de la semana, y validación de fechas y horas indicadas.
 - Comando `/donate` para apoyar voluntariamente el proyecto; no desbloquea funciones adicionales.
 
@@ -167,14 +169,12 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 
 Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` para consultar tu ID numérico.
 
-## 🐳 Instalación con Docker Compose
+## 🐳 Instalación con Docker Compose (IMPORTANTE LEER, para el tema de persmisos)
 
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
-2. Edita `docker-compose.yml` y cambia `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN` por tus valores. No publiques el archivo después de añadir credenciales reales.
+2. Edita `docker-compose.yml` y cambia `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN` por tus valores.
 
-3. Crea la carpeta persistente y prepara los permisos
-
-Antes de arrancar el contenedor, crea el directorio de datos:
+3. Crea la carpeta persistente `/data` y prepara los permisos. Antes de arrancar el contenedor, crea el directorio de datos para la SQlite:
    
    ```bash
    mkdir -p data
@@ -194,9 +194,9 @@ Antes de arrancar el contenedor, crea el directorio de datos:
    docker compose pull
    docker compose up -d
    ```
-   **Importante**: si SQLite muestra el error unable to open database file, comprueba los permisos del directorio data y verifica que el usuario 10001 tiene      permisos de escritura.
+   **Importante**: si SQLite muestra el error unable to open database file, comprueba los permisos del directorio `/data` y verifica que el usuario 10001  tiene permisos de escritura.
 
-5. Revisa el estado y los registros:
+5. Cuando el contenedor haya arrancado, revisa el estado y los registros:
 
    ```bash
    docker compose ps
@@ -226,7 +226,7 @@ El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entra
 
 Para más de un usuario, escribe los ID separados por comas, por ejemplo `111111111,222222222`. No uses nombres de usuario como sustituto de los ID.
 
-Para `ALERT_API_TOKEN` puedes generarlo con:
+Para generar `ALERT_API_TOKEN` puedes generarlo con el comando:
 ```bash
 openssl rand -hex 32
 ```
