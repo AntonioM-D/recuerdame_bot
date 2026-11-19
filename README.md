@@ -171,28 +171,39 @@ Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` pa
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
 2. Edita `docker-compose.yml` y cambia `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN` por tus valores. No publiques el archivo después de añadir credenciales reales.
 
-3. Crea la carpeta persistente y arranca el servicio:
+3. Crea la carpeta persistente y prepara los permisos
 
+Antes de arrancar el contenedor, crea el directorio de datos:
+   
    ```bash
    mkdir -p data
-   docker compose pull
-   docker compose up -d
    ```
 
-   En Synology quizá necesites ajustar los permisos de `data` para el UID `10001`, que es el usuario sin privilegios utilizado en el contenedor:
+   La aplicación se ejecuta dentro del contenedor con un usuario sin privilegios `(UID/GID 10001:10001)`.
+   Para que SQLite pueda crear y modificar la base de datos, el directorio persistente debe pertenecer a ese usuario.
+   **En Synology y otros sistemas Linux, ejecuta**:
 
    ```bash
    sudo chown -R 10001:10001 data
+   sudo chmod 755 data
    ```
+   A continuación, descarga la imagen y arranca el servicio:
 
-4. Revisa el estado y los registros:
+   ```bash
+   docker compose pull
+   docker compose up -d
+   ```
+   **Importante**: si SQLite muestra el error unable to open database file, comprueba los permisos del directorio data y verifica que el usuario 10001 tiene      permisos de escritura.
+
+5. Revisa el estado y los registros:
 
    ```bash
    docker compose ps
-   docker compose logs --tail=50 mibot
+   docker compose logs --tail=50
    ```
+   El contenedor debe aparecer como healthy y los registros deben mostrar que el bot ha iniciado el polling correctamente.
 
-5. Abre el bot en Telegram y envía `/start` o `/menu`.
+6. Abre el bot en Telegram y envía `/start` o `/menu`.
 
 El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entrantes en el router. La API de alertas queda accesible en la red local mediante el puerto `8787` del NAS.
 
