@@ -7,7 +7,7 @@
 
 <p align="center">
   <strong>Tu asistente personal de recordatorios en Telegram.</strong><br>
-  Fechas naturales, recurrencias, notas y alertas para tu NAS, en un bot ligero con Docker.
+  Fechas naturales, recurrencias, notas y alertas para tu NAS o tu vida personal, en un bot ligero con Docker.
 </p>
 
 <p align="center">
