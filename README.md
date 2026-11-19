@@ -62,10 +62,10 @@ El bot procesa metadatos automáticamente al compartir URLs (como libros o lanza
 git clone https://github.com/AntonioM-D/recuerdame_bot.git
 cd recuerdame_bot
 
-# Sustituye credenciales de ejemplo directamente en docker-compose.yml.
-mkdir -p data
-docker compose pull
-docker compose up -d
+# Configura primero las tres variables obligatorias en docker-compose.yml.
+chmod +x install.sh
+./install.sh --dry-run
+./install.sh
 ```
 
 La imagen `valkm/recuerdame_bot` está publicada en [Docker Hub](https://hub.docker.com/r/valkm/recuerdame_bot) para `linux/amd64` y `ARM64`
@@ -121,10 +121,11 @@ networks:
 El puerto **8787** queda accesible desde la red local del NAS. La API requiere `ALERT_API_TOKEN`; no configures un reenvío de este puerto desde Internet. Desde esa carpeta, arranca el bot con:
 
 ```bash
-mkdir -p data
-docker compose pull
-docker compose up -d
+./install.sh --dry-run
+./install.sh
 ```
+
+El instalador detecta el Compose y el bind mount de `/app/data`, valida las tres variables obligatorias sin imprimir sus valores, prepara los permisos para UID/GID `10001:10001`, descarga la imagen, prueba la escritura desde ese UID y solo entonces actualiza el servicio. No modifica ni sobrescribe `.env`; Compose puede leerlo para interpolar variables. Para aceptar sin pregunta interactiva, usa `./install.sh --yes`; `--dry-run` solo valida y muestra las acciones previstas.
 
 Para fijar una versión, cambia `latest` por la etiqueta deseada, por ejemplo `valkm/recuerdame_bot:1.1.1`.
 
@@ -169,34 +170,14 @@ Abre el bot en Telegram y envía `/menu`. La guía de instalación completa y la
 
 Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` para consultar tu ID numérico.
 
-## 🐳 Instalación con Docker Compose (IMPORTANTE LEER!, para el tema de permisos)
+## 🐳 Instalación con Docker Compose por SSH
 
 1. Copia o clona este repositorio en una carpeta del servidor. En Synology, por ejemplo, `/volume1/docker/recuerdame-bot`.
 2. Edita `docker-compose.yml` y cambia `BOT_TOKEN`, `ALLOWED_USER_IDS` y `ALERT_API_TOKEN` por tus valores.
 
-3. Crea la carpeta persistente `/data` y prepara los permisos. Antes de arrancar el contenedor, crea el directorio de datos para la SQlite:
-   
-   ```bash
-   mkdir -p data
-   ```
+3. Desde SSH, ejecuta `./install.sh --dry-run` para comprobar la configuración. Luego usa `./install.sh` (o `sudo ./install.sh` si tu usuario necesita permisos de Docker y `chown`). El script crea `data/` si hace falta, asigna UID/GID `10001:10001`, verifica la escritura con la imagen de la aplicación y solo después descarga y actualiza el servicio.
 
-   La aplicación se ejecuta dentro del contenedor con un usuario sin privilegios `(UID/GID 10001:10001)`.
-   Para que SQLite pueda crear y modificar la base de datos, el directorio persistente debe pertenecer a ese usuario.
-   **En Synology y otros sistemas Linux, ejecuta**:
-
-   ```bash
-   sudo chown -R 10001:10001 data
-   sudo chmod 755 data
-   ```
-   A continuación, descarga la imagen y arranca el servicio:
-
-   ```bash
-   docker compose pull
-   docker compose up -d
-   ```
-   **Importante**: si SQLite muestra el error unable to open database file, comprueba los permisos del directorio `/data` y verifica que el usuario 10001  tiene permisos de escritura.
-
-5. Cuando el contenedor haya arrancado, revisa el estado y los registros:
+4. Cuando el contenedor haya arrancado, revisa el estado y los registros:
 
    ```bash
    docker compose ps
@@ -207,6 +188,10 @@ Busca [@userinfobot](https://t.me/userinfobot) en Telegram y ejecuta `/start` pa
 6. Abre el bot en Telegram y envía `/start` o `/menu`.
 
 El bot usa long polling: no requiere dominio, certificado HTTPS ni puertos entrantes en el router. La API de alertas queda accesible en la red local mediante el puerto `8787` del NAS.
+
+## 🧭 Synology DS1621+ con Portainer
+
+En el DS1621+ conserva el despliegue y las actualizaciones desde Portainer. No ejecutes `install.sh` en ese NAS. En Portainer, mantén el stack Compose con sus variables configuradas, el volumen persistente de datos montado en `/app/data` y los permisos del directorio de datos para UID/GID `10001:10001`. Antes de actualizar la imagen, haz una copia consistente de SQLite (consulta la sección «Datos, copias y actualización»); después usa la acción de actualización del stack en Portainer y revisa que el contenedor quede healthy.
 
 ## ⚙️ Configuración
 
