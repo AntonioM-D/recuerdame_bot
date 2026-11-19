@@ -72,7 +72,7 @@ La imagen `valkm/recuerdame_bot` está publicada en [Docker Hub](https://hub.doc
 
 ### Ejemplo Compose usando directamente Docker Hub
 
-Si quieres crear tu propio `docker-compose.yml` sin clonar el repositorio, puedes partir de este ejemplo. Sustituye los valores de ejemplo por los tuyos antes de arrancar:
+Si quieres crear tu propio `docker-compose.yml` sin clonar el repositorio, puedes partir de este ejemplo. Sustituye los valores de ejemplo por los tuyos antes de arrancar: **Importante** <ins>recuerdame</ins>, va sin tilde, para evitar que de errores el contenedor. 
 
 ```yaml
 services:
